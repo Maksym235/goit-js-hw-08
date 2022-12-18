@@ -1,7 +1,6 @@
 import { galleryItems } from './gallery-items.js';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-// Change code below this line
 
 console.log(galleryItems);
 
@@ -17,7 +16,6 @@ function createGalleryItemList(items) {
     )
     .join('');
 }
-
 galleryRefs.innerHTML = galleryItemList;
 
 let gallery = new SimpleLightbox('.gallery a', {
