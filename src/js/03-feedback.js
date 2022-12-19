@@ -13,6 +13,7 @@ FormRefs.addEventListener('submit', onFormSubmit);
 
 function onTextareaInput(e) {
   allData[e.target.name] = e.target.value;
+  console.log(allData);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
 }
 
@@ -36,9 +37,19 @@ function removeInputValues() {
 
 function contantInput() {
   const inputValue = localStorage.getItem(STORAGE_KEY);
-  if (inputValue) {
-    allData = JSON.parse(inputValue);
-    inputRefs.value = allData.email;
-    textareaRefs.value = allData.message;
+  try {
+    const data = JSON.parse(inputValue);
+    Object.entries(data).forEach(([key, value]) => {
+      allData[key] = value;
+      FormRefs.elements[key].value = value;
+    });
+  } catch (error) {
+    console.log(error.name);
+    console.log(error.message);
   }
+  // if (inputValue) {
+  //   allData = JSON.parse(inputValue);
+  // inputRefs.value = allData.email;
+  // textareaRefs.value = allData.message;
+  // }
 }

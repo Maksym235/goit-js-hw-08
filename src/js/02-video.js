@@ -5,17 +5,21 @@ const player = new Player(iframe);
 const TIME_KEY = 'videoplayer-current-time';
 
 const onPlay = function (data) {
-  const JSONdata = JSON.stringify(data);
-  localStorage.setItem(TIME_KEY, JSONdata);
+  localStorage.setItem(TIME_KEY, data);
 };
 
 player.on('timeupdate', throttle(onPlay, 1000));
 
+const localFiels = localStorage.getItem(TIME_KEY);
+
 function resumePlayback() {
-  if (JSON.parse(localStorage.getItem(TIME_KEY)) === null) {
-    return;
+  try {
+    JSON.parse(localFiels);
+  } catch (error) {
+    console.log(error.name);
+    console.log(error.message);
   }
-  const paused = JSON.parse(localStorage.getItem(TIME_KEY));
+  const paused = JSON.parse(localFiels);
   if (paused) {
     player
       .setCurrentTime(paused)
