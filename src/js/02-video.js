@@ -5,22 +5,18 @@ const player = new Player(iframe);
 const TIME_KEY = 'videoplayer-current-time';
 
 const onPlay = function (data) {
-  localStorage.setItem(TIME_KEY, data);
+  localStorage.setItem(TIME_KEY, data.seconds);
 };
 
 player.on('timeupdate', throttle(onPlay, 1000));
 
-const localFiels = localStorage.getItem(TIME_KEY);
-
 function resumePlayback() {
-  try {
-    JSON.parse(localFiels);
-  } catch (error) {
-    console.log(error.name);
-    console.log(error.message);
+  const localFiels = localStorage.getItem(TIME_KEY);
+  if (localFiels === null) {
+    return;
   }
-  const paused = JSON.parse(localFiels);
-  if (paused) {
+  try {
+    const paused = JSON.parse(localFiels);
     player
       .setCurrentTime(paused)
       .then(function (seconds) {})
@@ -32,6 +28,9 @@ function resumePlayback() {
             break;
         }
       });
+  } catch (error) {
+    console.log(error.name);
+    console.log(error.message);
   }
 }
 resumePlayback();
